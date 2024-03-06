@@ -18,7 +18,7 @@ class WebsiteService extends Service
   // ---------------------------------
   // PROPERTIES
   protected array $rules = [
-    "TEXT_WEB_TITLE" => ["required", "string", "max:30"],
+    "TEXT_WEB_TITLE" => ["required", "string", "max:40"],
     "TEXT_WEB_LOCATION" => ["required", "string"],
     "TEXT_HERO_HEADER" => ["required", "string", "max:125"],
     "TEXT_HERO_DESCRIPTION" => ["required", "string", "max:255"],
@@ -76,7 +76,8 @@ class WebsiteService extends Service
   public function edit(MasterRole $userRole)
   {
     $roleName = $userRole->role_name;
-    if ($roleName === "admin") return $this->adminEdit();
+    if ($roleName === "admin")
+      return $this->adminEdit();
 
     return view("errors.403");
   }
@@ -87,7 +88,8 @@ class WebsiteService extends Service
     $data = $request->all();
 
     $roleName = $userRole->role_name;
-    if ($roleName === "admin") return $this->adminUpdate($data, $user);
+    if ($roleName === "admin")
+      return $this->adminUpdate($data, $user);
 
     return view("errors.403");
   }
@@ -112,8 +114,9 @@ class WebsiteService extends Service
     $rules = $this->settingWebsiteRules($this->rules, $data);
     $credentials = Validator::make($data, $rules, $this->messages)->validate();
 
-    if (empty($credentials)) return redirect("/dashboard/website")
-      ->withInfo("Kamu tidak melakukan editing pada website.");
+    if (empty($credentials))
+      return redirect("/dashboard/website")
+        ->withInfo("Kamu tidak melakukan editing pada website.");
 
     $fields = $this->generateFields($credentials, $user);
     return $this->updateWebsite($fields);
